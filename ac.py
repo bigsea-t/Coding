@@ -4,7 +4,7 @@ Arithmetic Coding
 ************************************************************************
 
     File    : arcode.py
-    Purpose : This file implements a simple functions for compressing 
+    Purpose : This file implement simple functions for compressing 
               string using the arithmetic coding algorithm.
     Author  : Taikai Takeda
     Date    : Nov 18, 2014
