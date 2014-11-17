@@ -8,6 +8,7 @@ Arithmetic Coding
               string using the arithmetic coding algorithm.
     Author  : Taikai Takeda
     Date    : Nov 18, 2014
+    Env     : Python 3.3.5
 
 ************************************************************************
 
