@@ -105,9 +105,40 @@ def orderL(num):
         order += 1
         th    /= 2.0
 
-def seekLM(uv, L = 1, pos = 0.5, posDlt = 0.5):
+def seekPos(uv, pos = 0.5, posDlt = 0.25):
     '''
-    seek minimum L
+    seek the point between u and v, which is
+    represented as 1/2^L(minimum L). Used binary search for efficiency.
+
+    uv: (u,v)
+    pos: start seeking position in (0,1)
+    posDlt: used for default seeking distance
+
+    ret: pos between [u,v)
+    '''
+    if pos < uv[0] :
+        return seekPos(uv, pos+posDlt, posDlt/2.0)
+    elif pos >= uv[1] :
+        return seekPos(uv, pos-posDlt, posDlt/2.0)
+    elif uv[0] <= pos < uv[1]:
+        return pos
+    else:
+        raise
+            
+
+
+def seekLM(uv, L = 1, pos = None):
+    '''
+    seek L and M
+    There are three patterns
+    remember pos is in [u,v)
+    1. pos - 2**(-L) is in [u,v)
+    2. pos + 2**(-L)  is in [u,v)
+    3. other -> L = L/2 and seek again
+
+    caution: DO NOT change the order of these if-else statements
+    M need to be the 'Minimum' number of some representitives
+
     L : start L 
     uv: (u,v)
     pos: start seeking position in (0,1)
@@ -115,29 +146,11 @@ def seekLM(uv, L = 1, pos = 0.5, posDlt = 0.5):
 
     ret:(L,M)
     '''
+    if pos == None:
+        print(uv)
+        pos = seekPos(uv)
 
-    # First, seek the point between u and v, which is
-    # represented as 1/2^L. Used binary search for efficiency.
-    while True:
-        posDlt /= 2.0
-        if pos < uv[0] :
-            pos += posDlt
-        elif pos >= uv[1] :
-            pos -= posDlt
-        elif uv[0] <= pos < uv[1]:
-            break
-
-    # Now pos is between u and v
-    # 
-    # Then, seek L and M
-    # There are three patterns
-    # remember pos is in [u,v)
-    # 1. pos - 2**(-L) is in [u,v)
-    # 2. pos + 2**(-L)  is in [u,v)
-    # 3. other -> L = L/2 and seek again
-
-    # caution: DO NOT change the order of these if-else statements
-    # M need to be the 'Minimum' number of some representitives
+    print(pos)
 
     if pos-2**(-L) >= uv[0]:
         M = round(pos * 2**L -1)
@@ -146,7 +159,7 @@ def seekLM(uv, L = 1, pos = 0.5, posDlt = 0.5):
         M = round(pos * 2**L)
         return (L,M)
     else:
-        return seekLM(uv, L+1, pos, posDlt)
+        return seekLM(uv, L+1, pos)
 
 def encode(simbols, p, q, simbolList, prnt = False):
     '''
