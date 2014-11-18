@@ -115,6 +115,9 @@ def seekLM(uv, L = 1, pos = 0.5, posDlt = 0.5):
 
     ret:(L,M)
     '''
+
+    # First, seek the point between u and v, which is
+    # represented as 1/2^L. Used binary search for efficiency.
     while True:
         posDlt /= 2.0
         if pos < uv[0] :
@@ -124,7 +127,17 @@ def seekLM(uv, L = 1, pos = 0.5, posDlt = 0.5):
         elif uv[0] <= pos < uv[1]:
             break
 
-    # pos is now between u and v
+    # Now pos is between u and v
+    # 
+    # Then, seek L and M
+    # There are three patterns
+    # remember pos is in [u,v)
+    # 1. pos - 2**(-L) is in [u,v)
+    # 2. pos + 2**(-L)  is in [u,v)
+    # 3. other -> L = L/2 and seek again
+
+    # caution: DO NOT change the order of these if-else statements
+    # M need to be the 'Minimum' number of some representitives
 
     if pos-2**(-L) >= uv[0]:
         M = round(pos * 2**L -1)
