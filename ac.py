@@ -124,6 +124,8 @@ def seekLM(uv, L = 1, pos = 0.5, posDlt = 0.5):
         elif uv[0] <= pos < uv[1]:
             break
 
+    # pos is now between u and v
+
     if pos-2**(-L) >= uv[0]:
         M = round(pos * 2**L -1)
         return (L,M)
@@ -133,7 +135,7 @@ def seekLM(uv, L = 1, pos = 0.5, posDlt = 0.5):
     else:
         return seekLM(uv, L+1, pos, posDlt)
 
-def encode(simbols, p, q, simbolList):
+def encode(simbols, p, q, simbolList, prnt = False):
     '''
     encode simbolList
     sibmols: simbol data
@@ -156,6 +158,12 @@ def encode(simbols, p, q, simbolList):
 
     L,M = seekLM((u,v), L = L_0)
 
+    if prnt:
+        print('u:',u)
+        print('v:',v)
+        print('L:',L)
+        print('M:',M)
+
     return format(M, 'b').zfill(L)
 
 
@@ -168,11 +176,11 @@ p      = [0.10,0.30,0.25,0.15,0.10,0.10]
 q      = cal_q(p)
 simbolList = list("BDC")
 
-print('endcode(BCD):',encode(simbol, p, q, simbolList))
+print('endcode(BCD):',encode(simbol, p, q, simbolList, prnt=True))
 
 simbol = ['1','2','3','4','5','6']
 p      = [3/16,1/16,3/16,2/16,4/16,3/16]
 q      = cal_q(p)
 simbolList = list("6151345565246313")
 
-print("endcode(6151345565246313):",encode(simbol, p, q, simbolList))
+print("endcode(6151345565246313):",encode(simbol, p, q, simbolList, prnt=True))
